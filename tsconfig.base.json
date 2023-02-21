@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@training-app/service": ["libs/service/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

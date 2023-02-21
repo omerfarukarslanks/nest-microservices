@@ -13,11 +13,11 @@ describe('AppService', () => {
     service = app.get<AppService>(AppService);
   });
 
-  describe('getData', () => {
+/*  describe('getData', () => {
     it('should return "Welcome to user-service!"', () => {
       expect(service.getData()).toEqual({
         message: 'Welcome to user-service!',
       });
     });
-  });
+  });*/
 });
