@@ -10,15 +10,19 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 import { AppModule } from "./app/app.module";
 import { ConfigService } from "@training-app/service";
 import process from "process";
+import helmet from 'helmet';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {cors: true});
   const globalPrefix = "api";
   app.setGlobalPrefix(globalPrefix);
   const port = getApiGatewayPort() || 3330;
 
-  // Proxy endpoints
+  // Helmet
+  app.use(helmet());
 
+
+  // Proxy endpoints
   app.use(`/api/${process.env.CUSTOMER_SERVICE_NAME}`, createProxyMiddleware({
     changeOrigin: true,
     router: async () => {
@@ -32,7 +36,6 @@ async function bootstrap() {
       return await getUrlConfiguration('userService', 3332);
     }
   }));
-
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
@@ -52,7 +55,5 @@ function getUrlConfiguration(serviceName: string, defaultPort: number): Promise<
 function getApiGatewayPort(): any {
   return new ConfigService().get('port');
 }
-
-
 
 bootstrap();
