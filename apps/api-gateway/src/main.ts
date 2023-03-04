@@ -36,6 +36,15 @@ async function bootstrap() {
       return await getUrlConfiguration('userService', 3332);
     }
   }));
+
+  app.use(`/api/${process.env.UAA_SERVICE_NAME}`, createProxyMiddleware({
+    changeOrigin: true,
+    router: async () => {
+      return await getUrlConfiguration('uaaService', 3333);
+    }
+  }));
+
+
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`

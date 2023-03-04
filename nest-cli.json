@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "proto": {
+      "type": "library",
+      "root": "libs/libs/proto",
+      "entryFile": "index",
+      "sourceRoot": "libs/libs/proto/src",
+      "compilerOptions": {
+      }
+    }
+  },
+  "compilerOptions": {
+    "webpack": true
+  }
+}

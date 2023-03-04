@@ -8,15 +8,14 @@ import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
 import process from "process";
-import helmet from 'helmet';
+import helmet from "helmet";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {cors: true,
-    logger: ['error', 'warn', 'debug'], bufferLogs: true});
+  const app = await NestFactory.create(AppModule, {cors: true});
   app.useGlobalPipes(new ValidationPipe());
-  const globalPrefix = 'api/user-service';
+  const globalPrefix = 'api/uaa-service';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.USER_SERVICE_PORT || 3332;
+  const port = process.env.UAA_SERVICE_PORT || 3333;
 
   // Helmet
   app.use(helmet());

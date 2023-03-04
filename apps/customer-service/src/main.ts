@@ -3,17 +3,19 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
 import helmet from 'helmet';
+import process from "process";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {cors: true});
+  app.useGlobalPipes(new ValidationPipe());
   const globalPrefix = 'api/customer-service';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3331;
+  const port = process.env.CUSTOMER_SERVICE_PORT || 3331;
 
   // Helmet
   app.use(helmet());

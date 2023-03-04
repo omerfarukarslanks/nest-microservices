@@ -24,6 +24,13 @@ export class ConfigService {
      }
    };
 
+    this.envConfig.uaaService = {
+      options: {
+        port: process.env.UAA_SERVICE_PORT,
+        host: process.env.UAA_SERVICE_HOST,
+      }
+    };
+
   }
 
   get(key: string): any {
