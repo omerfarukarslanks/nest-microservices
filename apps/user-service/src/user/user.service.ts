@@ -1,23 +1,15 @@
-import { BadRequestException, Inject, Injectable, OnModuleInit } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from "@training-app/service";
 import { UserResponse } from "./response/user.response";
-import { ClientKafka, EventPattern, Payload } from "@nestjs/microservices";
 
 @Injectable()
-export class UserService implements OnModuleInit{
+export class UserService{
 
-  clientKafka: ClientKafka;
-
-  constructor(private readonly prismaService: PrismaService,
-              @Inject('USER_SERVICE') clientKafka: ClientKafka) {
-    this.clientKafka = clientKafka;
+  constructor(private readonly prismaService: PrismaService) {
   }
 
-  async onModuleInit() {
-    await this.clientKafka.connect();
-  }
   async create(createUserDto: CreateUserDto) {
     const isEmailAvailable = await this.isEmailAvailable(createUserDto.email);
     const isUsernameAvailable = await this.isUsernameAvailable(createUserDto.username);
@@ -74,11 +66,5 @@ export class UserService implements OnModuleInit{
       where: {username: username.toLowerCase()},
       select: {username: true}
     }))
-  }
-
-  @EventPattern('get_find_one_user')
-  async sendFindUserById(@Payload() data: any) {
-    const user = await this.findOne(data.id);
-    this.clientKafka.emit('send_find_one_user', JSON.stringify(user));
   }
 }

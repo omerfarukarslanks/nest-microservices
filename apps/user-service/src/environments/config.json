@@ -1,0 +1,16 @@
+{
+  "HTTP_PORT": 8002,
+  "KAFKA_HOST": "0.0.0.0",
+  "KAFKA_PORT": 9092,
+  "GROUP_ID": "user-consumer",
+  "GLOBAL_API_PREFIX": "api/user-service",
+  "REVERSE_CONTEXT": "user",
+  "AUTH": {
+    "SECRET": "iot_secret_auth",
+    "EXPIRED_ON": "1d",
+    "REFRESH_SECRET": "iot_secret_refresh",
+    "REFRESH_EXPIRED_ON": "7d"
+  },
+  "I18N_LANG": "en",
+  "I18N_JSON_PATH": "/assets/i18n/"
+}

@@ -2,7 +2,6 @@ import { Module } from "@nestjs/common";
 
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { ConfigService } from "@training-app/service";
 import { ThrottlerModule } from "@nestjs/throttler";
 import process from "process";
 
@@ -16,9 +15,7 @@ import process from "process";
     })
   ],
   controllers: [AppController],
-  providers: [AppService,
-    ConfigService
-  ]
+  providers: [AppService]
 })
 export class AppModule {
 }

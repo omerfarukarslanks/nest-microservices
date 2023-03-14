@@ -13,7 +13,9 @@
         "outputPath": "dist/apps/uaa-service",
         "main": "apps/uaa-service/src/main.ts",
         "tsConfig": "apps/uaa-service/tsconfig.app.json",
-        "assets": ["apps/uaa-service/src/assets"],
+        "assets": [
+          "apps/uaa-service/src/environments",
+          "apps/uaa-service/src/assets"],
         "isolatedConfig": true,
         "webpackConfig": "apps/uaa-service/webpack.config.js"
       },

@@ -13,7 +13,9 @@
         "outputPath": "dist/apps/api-gateway",
         "main": "apps/api-gateway/src/main.ts",
         "tsConfig": "apps/api-gateway/tsconfig.app.json",
-        "assets": ["apps/api-gateway/src/assets"],
+        "assets": [
+          "apps/api-gateway/src/environments",
+          "apps/api-gateway/src/assets"],
         "isolatedConfig": true,
         "webpackConfig": "apps/api-gateway/webpack.config.js"
       },
@@ -32,7 +34,24 @@
       },
       "configurations": {
         "production": {
-          "buildTarget": "api-gateway:build:production"
+          "buildTarget": "api-gateway:build:production",
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/api-gateway/api/src/environments/environment.ts",
+              "with": "apps/api-gateway/api/src/environments/environment.prod.ts"
+            },
+            {
+              "replace": "apps/api-gateway/api/src/environments/config.ts",
+              "with": "apps/api-gateway/api/src/environments/config.prod.ts"
+            },
+            {
+              "replace": "apps/api-gateway/api/src/environments/orm-config.ts",
+              "with": "apps/api-gateway/api/src/environments/orm-config.prod.ts"
+            }
+          ]
         }
       }
     },

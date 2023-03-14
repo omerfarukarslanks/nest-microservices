@@ -5,7 +5,9 @@ import { AppService } from './app.service';
 import { CustomerModule } from "../customer/customer.module";
 
 @Module({
-  imports: [CustomerModule],
+  imports: [
+    CustomerModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -5,64 +5,29 @@
 
 import { Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import { createProxyMiddleware } from "http-proxy-middleware";
 
 import { AppModule } from "./app/app.module";
-import { ConfigService } from "@training-app/service";
+import { GatewayConfiguration, loadConfigJson, loadGatewayProxyConfig } from "@training-app/service";
 import process from "process";
 import helmet from 'helmet';
 
+// Load config.json file
+const config: GatewayConfiguration = loadConfigJson();
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {cors: true});
-  const globalPrefix = "api";
+  let app = await NestFactory.create(AppModule, {cors: true});
+  const globalPrefix = config.GLOBAL_API_PREFIX;
   app.setGlobalPrefix(globalPrefix);
-  const port = getApiGatewayPort() || 3330;
+  app = await loadGatewayProxyConfig(app, config);
+  const httpPort = config.HTTP_PORT || process.env.HTTP_PORT || 8010;
 
   // Helmet
   app.use(helmet());
 
 
-  // Proxy endpoints
-  app.use(`/api/${process.env.CUSTOMER_SERVICE_NAME}`, createProxyMiddleware({
-    changeOrigin: true,
-    router: async () => {
-      return await getUrlConfiguration('customerService', 3331);
-    }
-  }));
-
-  app.use(`/api/${process.env.USER_SERVICE_NAME}`, createProxyMiddleware({
-    changeOrigin: true,
-    router: async () => {
-      return await getUrlConfiguration('userService', 3332);
-    }
-  }));
-
-  app.use(`/api/${process.env.UAA_SERVICE_NAME}`, createProxyMiddleware({
-    changeOrigin: true,
-    router: async () => {
-      return await getUrlConfiguration('uaaService', 3333);
-    }
-  }));
-
-
-  await app.listen(port);
+  await app.listen(httpPort);
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Application is running on: http://localhost:${httpPort}/${globalPrefix}`
   );
-}
-
-function getUrlConfiguration(serviceName: string, defaultPort: number): Promise<any> {
-  return new Promise((resolve, reject) => {
-    resolve({
-      protocol: `${new ConfigService().get("protocol")}:`,
-      host: new ConfigService().get(serviceName).options.host || "0.0.0.0",
-      port: new ConfigService().get(serviceName).options.port || defaultPort
-    })
-  })
-}
-
-function getApiGatewayPort(): any {
-  return new ConfigService().get('port');
 }
 
 bootstrap();

@@ -1,0 +1,46 @@
+{
+  "HTTP_PORT": 8010,
+  "PROTOCOL": "http",
+  "GLOBAL_API_PREFIX": "api",
+  "AUTH": {
+    "SECRET": "iot_secret_auth",
+    "EXPIRED_ON": "1d",
+    "REFRESH_SECRET": "iot_secret_refresh",
+    "REFRESH_EXPIRED_ON": "7d"
+  },
+  "I18N_LANG": "en",
+  "I18N_JSON_PATH": "/assets/i18n/",
+  "CUSTOMER": {
+    "REVERSE_CONTEXT": "customer",
+    "GLOBAL_API_PREFIX": "/api/customer-service",
+    "REVERSE_ADDRESS": "http://127.0.0.1:8001",
+    "HTTP_PORT": 8001,
+    "HTTP_HOST": "localhost",
+    "KAFKA_HOST": "localhost",
+    "KAFKA_PORT": 9092,
+    "GROUP_ID": "customer-consumer",
+    "PROTOCOL": "http"
+  },
+  "USER": {
+    "REVERSE_CONTEXT": "user",
+    "GLOBAL_API_PREFIX": "/api/user-service",
+    "REVERSE_ADDRESS": "http://127.0.0.1:8002",
+    "HTTP_PORT": 8002,
+    "HTTP_HOST": "localhost",
+    "KAFKA_HOST": "localhost",
+    "KAFKA_PORT": 9092,
+    "GROUP_ID": "user-consumer",
+    "PROTOCOL": "http"
+  },
+  "UAA": {
+    "REVERSE_CONTEXT": "uaa",
+    "GLOBAL_API_PREFIX": "/api/uaa-service",
+    "REVERSE_ADDRESS": "http://127.0.0.1:8003",
+    "HTTP_PORT": 8003,
+    "HTTP_HOST": "localhost",
+    "KAFKA_HOST": "localhost",
+    "KAFKA_PORT": 9092,
+    "GROUP_ID": "uaa-consumer",
+    "PROTOCOL": "http"
+  }
+}

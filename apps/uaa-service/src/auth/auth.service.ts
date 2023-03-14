@@ -1,20 +1,14 @@
-import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
-import { ClientKafka, EventPattern, Payload } from "@nestjs/microservices";
 
 @Injectable()
-export class AuthService implements OnModuleInit {
+export class AuthService {
 
-  authClient: ClientKafka;
 
-  constructor(@Inject('AUTH_SERVICE') authClient: ClientKafka) {
-    this.authClient = authClient;
+  constructor() {
   }
 
-  async onModuleInit() {
-    await this.authClient.connect();
-  }
   create(createAuthDto: CreateAuthDto) {
     return 'This action adds a new auth';
   }
@@ -24,9 +18,7 @@ export class AuthService implements OnModuleInit {
   }
 
   async findOne(id: number) {
-    this.authClient.emit('get_find_one_user', {id});
-    const user = await this.handleFindOneUser();
-    return user;
+    return null;
 /*    const user = await this.validateUser('Patates.Arslan', '12345')
     return user;*/
   }
@@ -43,9 +35,4 @@ export class AuthService implements OnModuleInit {
     const user = await this.userService.findOne(1)
     return user;
   }*/
-
-  @EventPattern('send_find_one_user')
-  handleFindOneUser(@Payload() user?: any) {
-    return user;
-  }
 }

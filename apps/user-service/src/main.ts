@@ -4,19 +4,27 @@
  */
 
 import { Logger, ValidationPipe } from "@nestjs/common";
-import { NestFactory } from '@nestjs/core';
+import { NestFactory } from "@nestjs/core";
 
-import { AppModule } from './app/app.module';
+import { AppModule } from "./app/app.module";
 import process from "process";
-import helmet from 'helmet';
+import helmet from "helmet";
+import { loadConfigJson, loadKafkaOption, MicroServiceConfiguration } from "@training-app/service";
+import { KafkaOptions } from "@nestjs/microservices";
+
+const config: MicroServiceConfiguration = loadConfigJson();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {cors: true,
-    logger: ['error', 'warn', 'debug'], bufferLogs: true});
+  const app = await NestFactory.create(AppModule, { cors: true });
+  const globalPrefix = config.GLOBAL_API_PREFIX;
+  // // Setup kafka server for api
+  const options: KafkaOptions = await loadKafkaOption(config);
+  app.connectMicroservice(options);
+  app.startAllMicroservices();
+
   app.useGlobalPipes(new ValidationPipe());
-  const globalPrefix = 'api/user-service';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.USER_SERVICE_PORT || 3332;
+  const port = config.HTTP_PORT || process.env.HTTP_PORT || 8002;
 
   // Helmet
   app.use(helmet());

@@ -13,7 +13,9 @@
         "outputPath": "dist/apps/customer-service",
         "main": "apps/customer-service/src/main.ts",
         "tsConfig": "apps/customer-service/tsconfig.app.json",
-        "assets": ["apps/customer-service/src/assets"],
+        "assets": [
+          "apps/customer-service/src/environments",
+          "apps/customer-service/src/assets"],
         "isolatedConfig": true,
         "webpackConfig": "apps/customer-service/webpack.config.js"
       },
@@ -21,7 +23,17 @@
         "production": {
           "optimization": true,
           "extractLicenses": true,
-          "inspect": false
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/customer-service/api/src/environments/environment.ts",
+              "with": "apps/customer-service/api/src/environments/environment.prod.ts"
+            },
+            {
+              "replace": "apps/customer-service/api/src/environments/config.ts",
+              "with": "apps/customer-service/api/src/environments/config.prod.ts"
+            }
+          ]
         }
       }
     },
